@@ -1,0 +1,50 @@
+---
+title: "Box_&_Whiskers_Plot"
+author: "Veronica"
+date: "2023-10-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+# PACKAGES
+# -----------------------------------------------------
+# install.packages("readr")
+library(readr) 
+# install.packages("dplyr")
+library(dplyr)
+
+# READ FILES
+# -----------------------------------------------------
+CRISPRGeneEffect<-read.csv("CRISPRGeneEffect.csv",header= TRUE, sep= ",")
+```
+
+```{r}
+#install.packages("ggplot2")
+library(ggplot2)
+
+# Genes of interest
+selected_genes <- c("ANAPC2..29882.", "ANAPC1..64682.", "CDC27..996.", "ANAPC4..29945.", "ANAPC5..51433.", "CDC16..8881.", "ANAPC7..51434.", "CDC23..8697.", "ANAPC10..10393.", "ANAPC11..51529.", "CDC26..246184.", "ANAPC13..25847.", "ANAPC15..25906.", "ANAPC16..119504.", "CDC20..991.", "FZR1..51343.")
+
+selected_data <- CRISPRGeneEffect[, selected_genes]
+
+# Calculate medians for each gene
+medians <- apply(selected_data, 2, median)
+
+# Order genes based on medians
+ordered_genes <- names(sort(medians))
+
+# Use ggplot to make the box and whiskers plots
+box_plot <- ggplot(stack(selected_data[, ordered_genes]), aes(x = ind, y = values)) +
+  geom_boxplot(color = c("orange", "gold2", "lightgreen", "lightpink", "lightblue", "plum", "lightcoral", "seagreen" ,"lightslateblue", "royalblue" ,"violetred" ,"yellow", "yellowgreen", "turquoise2", "salmon", "red2")) +
+  labs(title = "Score Distribution for Selected Genes",
+       x = "Genes", y = "Score") +
+  scale_x_discrete(labels = ordered_genes) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) + 
+  coord_flip() +
+  theme_minimal()
+
+# Print the plot
+print(box_plot)
+```
