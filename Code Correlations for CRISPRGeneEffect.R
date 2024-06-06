@@ -19,20 +19,17 @@ library(readr)
 # Session >> Set Working Directory >> Pick file to save project in
 # getwd() # To double checking working directory
 # Paste file name into quotations; file should be in wd
-
-CRISPRGeneEffect<-read.csv("CRISPRGeneEffect.csv",header= TRUE, sep= ",")
+CRISPRGeneEffect <-read.csv("/Users/veronicaupadhyay/Desktop/Emanuele Lab/CRISPR_gene_effect.csv",header= TRUE, sep= ",")
 # Should show up in top right pane; double click on it to open the csv file in R
-ConditionSource <- read.csv("ExceptionsTeller.csv",header= TRUE, sep= ",")
+ConditionSource <- read.csv("/Users/veronicaupadhyay/Desktop/Emanuele Lab/ExceptionsTeller.csv",header= TRUE, sep= ",")
 
 
 # ⭐ FILTER Myeloid, Lymphoid
 filter_out <- ConditionSource$Depmap.ID[ConditionSource$Lineage %in% c("Myeloid", "Lymphoid")]
 # Remember to change names of these omitted- types in output files' names*
-    # To check what IDs are omited:
-    # print(filter_out)
 
 # Create a new, filtered, CRISPRGeneEffect 
-CRISPRGeneEffect_filtered <- CRISPRGeneEffect[!CRISPRGeneEffect$ModelID %in% filter_out, ]
+CRISPRGeneEffect_filtered <- CRISPRGeneEffect[!CRISPRGeneEffect$DepMap_ID %in% filter_out, ]
 
 
 
@@ -44,7 +41,7 @@ num_cols_sourceset <- 2:ncol(CRISPRGeneEffect_filtered)  # 2 cause the first col
 gene_names <- names(CRISPRGeneEffect_filtered[num_cols_sourceset])
 
 # Control Number of Files Produced:
-genes_to_process <-gene_names[84:100] 
+genes_to_process <-gene_names[1:2] 
 
 # ⭐ KEY GENE ITERATION
 # nested for in loops: https://www.educba.com/nested-for-loop-in-r/ 
